@@ -1,0 +1,153 @@
+/* Variables de color para un uso consistente */
+:root {
+    --primary-color: #ff9800; /* Naranja cálido - Color principal de acento */
+    --secondary-color: #4CAF50; /* Verde amigable - Para botones y acentos */
+    --text-color: #333;
+    --background-color: #fff8e1; /* Amarillo muy pálido */
+    --card-bg: #ffffff;
+    --shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Estilo general del cuerpo con fondo de huellas */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: var(--text-color);
+    background-color: var(--background-color);
+     
+    background-image: url('img/pet-svgrepo-com.svg');
+    background-repeat: repeat;
+    background-size: 150px;
+    background-attachment: fixed;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Encabezado */
+.main-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 20px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.main-title {
+    margin: 0 0 5px 0;
+    font-size: 2.5em;
+}
+
+.tagline {
+    margin: 0;
+    font-size: 1.2em;
+    font-style: italic;
+}
+
+/* Sección Principal (Héroe) */
+.hero-section {
+    background-color: var(--card-bg);
+    padding: 40px;
+    border-radius: 10px;
+    margin-top: 30px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.hero-image {
+    display: block;
+    margin: 0 auto 20px;
+    max-width: 100%;
+    width: 350px; /* Tamaño fijo para la imagen */
+    height: auto;
+    border-radius: 50%; /* Forma de círculo para un aspecto amigable */
+    border: 5px solid var(--primary-color);
+    transition: transform 0.5s ease-in-out; /* Animación simple al cargar/interactuar */
+}
+
+/* Información de API (Endpoints) */
+.api-info h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.endpoints-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.endpoint-card {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 200px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+.endpoint-card:hover {
+    transform: translateY(-5px); /* Efecto dinámico al pasar el ratón */
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.endpoint-card h3 {
+    color: var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 5px;
+}
+
+/* Botones de Llamada a la Acción (CTA) */
+.cta-links {
+    text-align: center;
+    padding: 20px 0 40px;
+}
+
+.cta-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 25px;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px; /* Botones redondeados */
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    text-transform: uppercase;
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+}
+
+.primary-btn:hover {
+    background-color: #e68900; /* Tono más oscuro de naranja */
+    transform: scale(1.05);
+}
+
+.secondary-btn {
+    background-color: var(--secondary-color);
+}
+
+.secondary-btn:hover {
+    background-color: #388e3c; /* Tono más oscuro de verde */
+    transform: scale(1.05);
+}
+
+/* Pie de página */
+.main-footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: var(--text-color);
+    color: white;
+    font-size: 0.9em;
+    margin-top: 20px;
+}

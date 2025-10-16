@@ -1,17 +1,21 @@
-# CoderHouse Backend 3 — Pre-Entrega 1
+# CoderHouse Backend — Entrega Final
 
-API REST con **Express 5**, **Mongoose 8**, **dotenv**, **bcryptjs** y **@faker-js/faker**. Incluye endpoints CRUD para *users* y *pets*, y un router de *mocks* para generar datos de prueba y sembrar la base.
+API REST con **Express 5**, **Mongoose 8**, **dotenv**, **bcryptjs**, **Swagger** y **Docker**. Incluye endpoints CRUD para *users*, *pets* y *adoptions*, documentación con Swagger, tests funcionales y despliegue con Docker.
 
 ---
 
 ## ✨ Características
 - **Stack**: Node.js ≥ 18, Express 5, Mongoose 8
 - **Routers**:
-  - `/api/users`: CRUD de usuarios
+  - `/api/users`: CRUD de usuarios (documentado con Swagger)
   - `/api/pets`: CRUD de mascotas
-  - `/api/mocks`: generación de usuarios/mascotas (*faker*) y seed de BD
+  - `/api/adoptions`: Gestión de adopciones
+  - `/api/sessions`: Gestión de sesiones
 - **DB**: MongoDB (soporte para **local** y Atlas vía `.env`)
-- **Seguridad**: variables de entorno con `dotenv`; mock de usuarios con contraseña encriptada (`coder123` → `bcryptjs`)
+- **Seguridad**: variables de entorno con `dotenv`; contraseñas encriptadas con `bcryptjs`
+- **Documentación**: API documentada con Swagger UI en `/api-docs`
+- **Tests**: Tests funcionales con Mocha, Chai y Supertest
+- **Docker**: Imagen disponible en DockerHub para fácil despliegue
 
 ---
 
@@ -20,21 +24,50 @@ API REST con **Express 5**, **Mongoose 8**, **dotenv**, **bcryptjs** y **@faker-
 .
 ├─ .env                       # variables locales (NO commitear)
 ├─ .gitignore
+├─ Dockerfile                 # configuración para Docker
 ├─ package.json
 ├─ README.md
-└─ src/
-   ├─ app.js                  # server + conexión a Mongo
-   ├─ routes/
-   │  ├─ users.router.js
-   │  ├─ pets.router.js
-   │  └─ mocks.router.js
-   ├─ dao/
-   │  └─ models/
-   │     ├─ user.model.js
-   │     └─ pet.model.js
-   └─ utils/
-      ├─ user.mocking.js
-      └─ pet.mocking.js
+├─ src/
+│  ├─ app.js                  # server + conexión a Mongo
+│  ├─ routes/
+│  │  ├─ users.router.js
+│  │  ├─ pets.router.js
+│  │  ├─ adoption.router.js
+│  │  └─ sessions.router.js
+│  ├─ controllers/
+│  │  ├─ users.controller.js
+│  │  ├─ pets.controller.js
+│  │  ├─ adoptions.controller.js
+│  │  └─ sessions.controller.js
+│  ├─ dao/
+│  │  ├─ Adoption.js
+│  │  ├─ Pets.dao.js
+│  │  ├─ Users.dao.js
+│  │  └─ models/
+│  ├─ docs/
+│  │  ├─ openapi-users.yaml   # documentación Swagger
+│  │  └─ swagger.js
+│  ├─ dto/
+│  │  ├─ Pet.dto.js
+│  │  └─ User.dto.js
+│  ├─ public/
+│  │  ├─ img/
+│  │  ├─ index.html
+│  │  ├─ script.js
+│  │  └─ style.css
+│  ├─ repository/
+│  │  ├─ AdoptionRepository.js
+│  │  ├─ GenericRepository.js
+│  │  ├─ PetRepository.js
+│  │  └─ UserRepository.js
+│  └─ utils/
+│     ├─ index.js
+│     └─ uploader.js
+└─ test/
+   ├─ adoptions.test.js
+   ├─ bcrypt.test.js
+   ├─ pets.test.js
+   └─ supertest.test.js
 ```
 
 ---
@@ -56,15 +89,39 @@ PORT=8080
 ---
 
 ## 🧰 Instalación y ejecución
+
+### Método 1: Instalación local
 ```bash
 npm install
 npm run dev   # nodemon
 # o
 npm start     # node src/app.js
 ```
-### Saludo del servidor
+
+### Método 2: Usando Docker
+```bash
+# Opción 1: Usar la imagen de DockerHub
+docker pull gonzanahuel/backend-coder
+docker run -p 8080:8080 gonzanahuel/backend-coder
+
+# Opción 2: Construir la imagen localmente
+docker build -t adopme-api .
+docker run -p 8080:8080 adopme-api
 ```
-GET http://localhost:8080/
+
+### Acceso a la aplicación
+```
+GET http://localhost:8080/         # Página principal
+GET http://localhost:8080/api-docs # Documentación Swagger
+```
+
+## 🧪 Ejecución de tests
+```bash
+# Ejecutar todos los tests
+npm test
+
+# Ejecutar tests específicos de adopciones
+npm test -- -g "Adopciones"
 ```
 
 ---
@@ -165,20 +222,7 @@ GET http://localhost:8080/
   }
 }
 ```
-
----
-
-## 🆘 Troubleshooting
-- **ECONNREFUSED 127.0.0.1:27017** → Mongo no está corriendo. Iniciar servicio o contenedor.
-- **Unique email** al re-seed → borrar colección `users` o variar datos mock.
-- **Puerto en uso** → cambiar `PORT` en `.env`.
-
----
-
-## 📜 Licencia
-A definir por el equipo (MIT sugerida).
-
----
+ 
 
 ## 👥 Autores
 -Gonzalo Veglio — Backend 3 (Pre-Entrega 1)

@@ -1,0 +1,178 @@
+openapi: 3.0.3
+info:
+  title: Users API - CoderHouse Backend 3
+  version: 1.0.0
+  description: |
+    Documentación Swagger del **módulo Users**.
+    Base path montado en `/api/users`.
+servers:
+  - url: http://localhost:8080
+tags:
+  - name: Users
+paths:
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Listar usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          description: Error del servidor
+    post:
+      tags: [Users]
+      summary: Crear usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Payload inválido
+        '500':
+          description: Error del servidor
+  /api/users/{userId}:
+    get:
+      tags: [Users]
+      summary: Obtener usuario por ID
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: ID inválido
+        '404':
+          description: Usuario no encontrado
+    put:
+      tags: [Users]
+      summary: Actualizar usuario
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: ID o payload inválido
+        '404':
+          description: Usuario no encontrado
+    delete:
+      tags: [Users]
+      summary: Eliminar usuario
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Usuario eliminado
+        '400':
+          description: ID inválido
+        '404':
+          description: Usuario no encontrado
+components:
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+        description: ObjectId de MongoDB
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64f1a5c2e6d5d1b2c3a4e5f6
+        first_name:
+          type: string
+          example: Ada
+        last_name:
+          type: string
+          example: Lovelace
+        email:
+          type: string
+          format: email
+          example: ada@example.com
+        age:
+          type: integer
+          example: 32
+        role:
+          type: string
+          enum: [user, admin]
+          example: user
+        pets:
+          type: array
+          items:
+            type: string
+            description: ObjectId de Pet
+    UserCreate:
+      type: object
+      required: [first_name, last_name, email, password]
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        age:
+          type: integer
+        password:
+          type: string
+          format: password
+        role:
+          type: string
+          enum: [user, admin]
+    UserUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+          format: email
+        age:
+          type: integer
+        password:
+          type: string
+          format: password
+        role:
+          type: string
+          enum: [user, admin]
