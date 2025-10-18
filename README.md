@@ -82,7 +82,7 @@ API REST con **Express 5**, **Mongoose 8**, **dotenv**, **bcryptjs**, **Swagger*
 Crear un archivo **`.env`** en la raíz (no subir al repo):
 ```env
 MONGODB_URI=mongodb://localhost:27017/backend3
-PORT=8080
+PORT=8000
 ```
 > Si usás Atlas, pegá tu cadena completa en `MONGODB_URI`.
 
@@ -101,18 +101,18 @@ npm start     # node src/app.js
 ### Método 2: Usando Docker
 ```bash
 # Opción 1: Usar la imagen de DockerHub
-docker pull gonzanahuel/backend-coder
-docker run -p 8080:8080 gonzanahuel/backend-coder
-
+docker pull gonzanahuel/coder-adopt-api
+docker run -p 8000:8000 gonzanahuel/coder-adopt-api
+ 
 # Opción 2: Construir la imagen localmente
-docker build -t adopme-api .
-docker run -p 8080:8080 adopme-api
+docker build -t coder-adopt-api .
+docker run -p 8000:8000 coder-adopt-api
 ```
 
 ### Acceso a la aplicación
 ```
-GET http://localhost:8080/         # Página principal
-GET http://localhost:8080/api-docs # Documentación Swagger
+GET http://localhost:8000/         # Página principal
+GET http://localhost:8000/api-docs # Documentación Swagger
 ```
 
 ## 🧪 Ejecución de tests
@@ -138,7 +138,7 @@ npm test -- -g "Adopciones"
 
 ### Pet (`src/dao/models/pet.model.js`)
 - `name`: String, **required**
-- `species`: String, **required**
+- `specie`: String, **required**
 - `owner`: ObjectId, **ref:** `'users'`
  
 
@@ -178,11 +178,11 @@ npm test -- -g "Adopciones"
 
 ### Generar usuarios mock (paramétrico)
 - Método: **GET**
-- URL: `http://localhost:8080/api/mocks/mockingusers?count=5`
+- URL: `http://localhost:8000/api/mocks/mockingusers?count=5`
 
 ### Insertar BD (users + pets)
 - Método: **POST**
-- URL: `http://localhost:8080/api/mocks/generateData`
+- URL: `http://localhost:8000/api/mocks/generateData`
 - Headers:  
     - `Content-Type: application/json`
 - Body (raw, JSON):
@@ -195,9 +195,9 @@ npm test -- -g "Adopciones"
 
 ### Listar colecciones
 - Método: **GET**
-- URL: `http://localhost:8080/api/users`
+- URL: `http://localhost:8000/api/users`
 - Método: **GET**
-- URL: `http://localhost:8080/api/pets` 
+- URL: `http://localhost:8000/api/pets` 
  
 
 ## ✅ Checklist de la consigna

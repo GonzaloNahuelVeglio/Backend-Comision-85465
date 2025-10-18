@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const swaggerPath = path.join(__dirname, 'openapi-users.yaml');
+const swaggerPath = path.join(__dirname, 'openapi-complete.yaml');
 const swaggerDocument = yaml.load(swaggerPath);
 
 export default function mountSwagger(app) {

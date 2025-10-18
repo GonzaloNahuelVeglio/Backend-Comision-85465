@@ -8,9 +8,9 @@ const getAllPets = async(req,res)=>{
 }
 
 const createPet = async(req,res)=> {
-    const {name,specie,birthDate} = req.body;
-    if(!name||!specie||!birthDate) return res.status(400).send({status:"error",error:"Incomplete values"})
-    const pet = PetDTO.getPetInputFrom({name,specie,birthDate});
+    const {name,specie} = req.body;
+    if(!name||!specie) return res.status(400).send({status:"error",error:"Incomplete values"})
+    const pet = PetDTO.getPetInputFrom({name,specie});
     const response =await petsService.create(pet);
     res.send({status:"success",payload:response._id})
 }
@@ -30,13 +30,12 @@ const deletePet = async(req,res)=> {
 
 const createPetWithImage = async(req,res) =>{
     const file = req.file;
-    const {name,specie,birthDate} = req.body;
-    if(!name||!specie||!birthDate) return res.status(400).send({status:"error",error:"Incomplete values"})
+    const {name,specie} = req.body;
+    if(!name||!specie) return res.status(400).send({status:"error",error:"Incomplete values"})
     console.log(file);
     const pet = PetDTO.getPetInputFrom({
         name,
-        specie,
-        birthDate,
+        specie, 
         image:`${__dirname}/../public/img/${file.filename}`
     });
     console.log(pet);

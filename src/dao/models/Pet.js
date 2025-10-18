@@ -10,12 +10,7 @@ const schema = new mongoose.Schema({
     specie:{
         type:String,
         required:true
-    },
-    birthDate:Date,
-    adopted:{
-        type:Boolean,
-        default:false
-    },
+    }, 
     owner:{
         type:mongoose.SchemaTypes.ObjectId,
         ref:'Users'

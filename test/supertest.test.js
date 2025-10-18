@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import supertest from "supertest";
 
-const requester = supertest("http://localhost:8080")
+const requester = supertest("http://localhost:8000")
 
 
 describe("test con supertest",function(){
@@ -9,8 +9,7 @@ describe("test con supertest",function(){
         it("Enpoint para para crear mascotas", async function(){
             const pet = {
                 name:'Mila',
-                specie:'Gato',
-                birthDate:'10/06/2025'
+                specie:'Gato'
             }
             const response = await requester.post('/api/pets').send(pet)
             console.log(response)
@@ -29,8 +28,7 @@ describe("test con supertest",function(){
         it('Endpoint put pets',async function(){
             const pet = {
                 name:'Mila',
-                specie:'Gato',
-                birthDate:'10/06/2025'
+                specie:'Gato' 
             }
          const {_body:petCreatedBody} =  await requester.post('/api/pets').send(pet)
 

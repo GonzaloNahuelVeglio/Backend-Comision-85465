@@ -1,10 +1,11 @@
 import Pet from "../src/dao/Pets.dao.js";
 import mongoose from "mongoose";
 import { expect } from "chai";
+import dotenv from "dotenv"
 
-mongoose.connect(`mongodb://localhost:27017`)
+dotenv.config()
 
-
+mongoose.connect(process.env.MONGO_URL)
 
 describe("Testing Pet dao", function(){
     before(function(){
@@ -18,9 +19,8 @@ describe("Testing Pet dao", function(){
 
     it("El Dao debe agregar correctamente un elemento a la base de datos",async function(){
         const pet = {
-            name: "Pitu",
-            specie: "Perro",
-            birthDate: "2020-05-15"
+            name: "Mila",
+            specie: "Perro" 
         }
         const result = await this.pets.save(pet);
         expect(result.name).to.equal(pet.name)

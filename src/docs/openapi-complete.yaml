@@ -1,0 +1,430 @@
+openapi: 3.0.3
+info:
+  title: AdopMe API - CoderHouse Backend
+  version: 1.0.0
+  description: |
+    Documentación Swagger completa de la API AdopMe.
+    Incluye módulos de Usuarios, Mascotas y Adopciones.
+servers:
+  - url: http://localhost:8000
+tags:
+  - name: Users
+    description: Operaciones relacionadas con usuarios
+  - name: Pets
+    description: Operaciones relacionadas con mascotas
+  - name: Adoptions
+    description: Operaciones relacionadas con adopciones
+paths:
+  # USUARIOS
+  /api/users:
+    get:
+      tags: [Users]
+      summary: Listar usuarios
+      responses:
+        '200':
+          description: Lista de usuarios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          description: Error del servidor
+    post:
+      tags: [Users]
+      summary: Crear usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: Usuario creado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+        '400':
+          description: Payload inválido
+        '500':
+          description: Error del servidor
+  /api/users/{userId}:
+    get:
+      tags: [Users]
+      summary: Obtener usuario por ID
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Usuario encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: ID inválido
+        '404':
+          description: Usuario no encontrado
+    put:
+      tags: [Users]
+      summary: Actualizar usuario
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: Usuario actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: ID o payload inválido
+        '404':
+          description: Usuario no encontrado
+    delete:
+      tags: [Users]
+      summary: Eliminar usuario
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+      responses:
+        '200':
+          description: Usuario eliminado
+        '400':
+          description: ID inválido
+        '404':
+          description: Usuario no encontrado
+
+  # MASCOTAS
+  /api/pets:
+    get:
+      tags: [Pets]
+      summary: Listar mascotas
+      responses:
+        '200':
+          description: Lista de mascotas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pet'
+        '500':
+          description: Error del servidor
+    post:
+      tags: [Pets]
+      summary: Crear mascota
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetCreate'
+      responses:
+        '201':
+          description: Mascota creada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  pet:
+                    $ref: '#/components/schemas/Pet'
+        '400':
+          description: Payload inválido
+        '500':
+          description: Error del servidor
+  /api/pets/{petId}:
+    get:
+      tags: [Pets]
+      summary: Obtener mascota por ID
+      parameters:
+        - $ref: '#/components/parameters/PetId'
+      responses:
+        '200':
+          description: Mascota encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: ID inválido
+        '404':
+          description: Mascota no encontrada
+    put:
+      tags: [Pets]
+      summary: Actualizar mascota
+      parameters:
+        - $ref: '#/components/parameters/PetId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetUpdate'
+      responses:
+        '200':
+          description: Mascota actualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pet'
+        '400':
+          description: ID o payload inválido
+        '404':
+          description: Mascota no encontrada
+    delete:
+      tags: [Pets]
+      summary: Eliminar mascota
+      parameters:
+        - $ref: '#/components/parameters/PetId'
+      responses:
+        '200':
+          description: Mascota eliminada
+        '400':
+          description: ID inválido
+        '404':
+          description: Mascota no encontrada
+
+  # ADOPCIONES
+  /api/adoptions:
+    get:
+      tags: [Adoptions]
+      summary: Listar adopciones
+      responses:
+        '200':
+          description: Lista de adopciones
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Adoption'
+        '500':
+          description: Error del servidor
+  
+  /api/adoptions/{aid}:
+    get:
+      tags: [Adoptions]
+      summary: Obtener adopción por ID
+      parameters:
+        - $ref: '#/components/parameters/AdoptionId'
+      responses:
+        '200':
+          description: Adopción encontrada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    $ref: '#/components/schemas/Adoption'
+        '400':
+          description: ID inválido
+        '404':
+          description: Adopción no encontrada
+  
+  /api/adoptions/{uid}/{pid}:
+    post:
+      tags: [Adoptions]
+      summary: Crear adopción
+      parameters:
+        - $ref: '#/components/parameters/UserId'
+        - $ref: '#/components/parameters/PetId'
+      responses:
+        '201':
+          description: Adopción creada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  payload:
+                    $ref: '#/components/schemas/Adoption'
+        '400':
+          description: IDs inválidos
+        '404':
+          description: Usuario o mascota no encontrados
+        '409':
+          description: La mascota ya está adoptada
+
+components:
+  parameters:
+    UserId:
+      in: path
+      name: userId
+      required: true
+      schema:
+        type: string
+        description: ObjectId de MongoDB
+    PetId:
+      in: path
+      name: petId
+      required: true
+      schema:
+        type: string
+        description: ObjectId de MongoDB
+    AdoptionId:
+      in: path
+      name: aid
+      required: true
+      schema:
+        type: string
+        description: ObjectId de MongoDB
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64f1a5c2e6d5d1b2c3a4e5f6
+        first_name:
+          type: string
+          example: Ada
+        last_name:
+          type: string
+          example: Lovelace
+        email:
+          type: string
+          format: email
+          example: ada@example.com
+        age:
+          type: integer
+          example: 32
+        role:
+          type: string
+          enum: [user, admin]
+          example: user
+        pets:
+          type: array
+          items:
+            type: string
+            description: ObjectId de Pet
+          example: ["64f1a5c2e6d5d1b2c3a4e5f7", "64f1a5c2e6d5d1b2c3a4e5f8"]
+    UserCreate:
+      type: object
+      required: [first_name, last_name, email, password]
+      properties:
+        first_name:
+          type: string
+          example: Ada
+        last_name:
+          type: string
+          example: Lovelace
+        email:
+          type: string
+          format: email
+          example: ada@example.com
+        password:
+          type: string
+          format: password
+          example: "********"
+        age:
+          type: integer
+          example: 32
+    UserUpdate:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: Ada
+        last_name:
+          type: string
+          example: Lovelace
+        email:
+          type: string
+          format: email
+          example: ada@example.com
+        age:
+          type: integer
+          example: 32
+        role:
+          type: string
+          enum: [user, admin]
+          example: user
+    Pet:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64f1a5c2e6d5d1b2c3a4e5f7
+        name:
+          type: string
+          example: Firulais
+        specie:
+          type: string
+          example: dog
+        adopted:
+          type: boolean
+          example: false
+        owner:
+          type: string
+          description: ObjectId de User
+          example: null
+    PetCreate:
+      type: object
+      required: [name, specie]
+      properties:
+        name:
+          type: string
+          example: Firulais
+        specie:
+          type: string
+          example: dog
+    PetUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Firulais
+        specie:
+          type: string
+          example: dog
+        adopted:
+          type: boolean
+          example: false
+        owner:
+          type: string
+          description: ObjectId de User
+          example: "64f1a5c2e6d5d1b2c3a4e5f6"
+    Adoption:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 64f1a5c2e6d5d1b2c3a4e5f9
+        owner:
+          $ref: '#/components/schemas/User'
+        pet:
+          $ref: '#/components/schemas/Pet'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-09-01T12:00:00Z"

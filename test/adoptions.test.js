@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import supertest from "supertest";
 
-const requester = supertest("http://localhost:8080");
+const requester = supertest("http://localhost:8000");
 
 // Variables para almacenar IDs de prueba
 let testUserId;
@@ -23,8 +23,7 @@ describe("Tests de Adopciones", function() {
         // Crear una mascota de prueba
         const petResponse = await requester.post('/api/pets').send({
             name: "Mascota Test",
-            specie: "Perro",
-            birthDate: "2020-01-01"
+            specie: "Perro" 
         });
         testPetId = petResponse.body.payload;
     });

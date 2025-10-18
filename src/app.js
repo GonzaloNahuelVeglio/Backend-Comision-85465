@@ -20,22 +20,25 @@ const __dirnameApp = path.dirname(__filename);
 
 dotenv.config()
 
+// Silencia warning y se prepara para Mongoose 7
+mongoose.set('strictQuery', false);
+
 const app = express();
-const PORT = process.env.PORT||8080;
-const connection = mongoose.connect(process.env.DATABASE)
+const PORT = process.env.PORT || 8000;
+const MONGO_URL = process.env.MONGO_URL
 
 mountSwagger(app);
 const options = {
-    definition: {
-      openapi: "3.0.0",
-      info: {
-        title: "API de ejemplo con Swagger",
-        version: "1.0.0",
-        description: "Documentación de la API usando Swagger",
-      },
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "API de ejemplo con Swagger",
+      version: "1.0.0",
+      description: "Documentación de la API usando Swagger",
     },
+  },
   apis: [path.join(__dirnameApp, "docs/*.yaml")],
-  };
+};
 
 app.use(express.json());
 app.use(cookieParser());
@@ -47,14 +50,39 @@ const swaggerSpec = swaggerJsdoc(options);
 
 // Ruta de Swagger UI
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-app.use('/api/users',usersRouter);
-app.use('/api/pets',petsRouter);
-app.use('/api/adoptions',adoptionsRouter);
-app.use('/api/sessions',sessionsRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/pets', petsRouter);
+app.use('/api/adoptions', adoptionsRouter);
+app.use('/api/sessions', sessionsRouter);
 
 // Ruta principal sirve el archivo index.html
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirnameApp, 'public', 'index.html'));
 });
- 
-app.listen(PORT,()=>console.log(`Listening on ${PORT}`))
+
+
+async function start() {
+  try {
+    await mongoose.connect(MONGO_URL)
+    console.log('✅ Mongo conectado')
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Listening on ${PORT}`)
+    })
+  } catch (err) {
+    console.error('❌ Error conectando a Mongo:', err.message)
+    process.exit(1) 
+  }
+}
+
+start()
+
+process.on('SIGTERM', async () => {
+  await mongoose.connection.close()
+  process.exit(0)
+})
+process.on('SIGINT', async () => {
+  await mongoose.connection.close()
+  process.exit(0)
+})
+
