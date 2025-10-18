@@ -100,6 +100,7 @@ npm start     # node src/app.js
 
 ### Método 2: Usando Docker
 ```bash
+url: https://hub.docker.com/r/gonzanahuel/coder-adopt-api
 # Opción 1: Usar la imagen de DockerHub
 docker pull gonzanahuel/coder-adopt-api
 docker run -p 8000:8000 gonzanahuel/coder-adopt-api
